@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЛыткаринЪ — Исследование и стратегия запуска пива</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-0: #080706;
+            --bg-1: #0e0d0a;
+            --bg-2: #161411;
+            --bg-3: #1e1b16;
+            --bg-4: #28241d;
+            --border: rgba(200,170,100,0.08);
+            --border-hover: rgba(200,170,100,0.15);
+            --t1: #f5f0e5;
+            --t2: #a89e88;
+            --t3: #6b6050;
+            --amber: #f59e0b;
+            --gold: #eab308;
+            --copper: #d97706;
+            --beer-dark: #92400e;
+            --green: #22c55e;
+            --sky: #38bdf8;
+            --red: #ef4444;
+            --rose: #fb7185;
+            --violet: #a78bfa;
+            --g-hero: linear-gradient(135deg, #fbbf24, #d97706, #92400e);
+            --g-gold: linear-gradient(135deg, #fbbf24, #f59e0b);
+            --g-fire: linear-gradient(135deg, #f59e0b, #ef4444);
+            --g-mint: linear-gradient(135deg, #22c55e, #38bdf8);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:#3a3020 transparent; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-0); color:var(--t1); line-height:1.65; overflow-x:hidden; }
+
+        body::after {
+            content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.25;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background-size:512px;
+        }
+
+        ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#3a3020;border-radius:3px}
+
+        /* ===== NAV ===== */
+        .nav{position:fixed;top:0;left:0;right:0;z-index:1000;backdrop-filter:blur(24px) saturate(180%);background:rgba(8,7,6,0.82);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 2rem}
+        .nav-brand{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--amber);letter-spacing:2px}
+        .nav-links{display:flex;gap:0.15rem;list-style:none}
+        .nav-links a{color:var(--t2);text-decoration:none;font-size:0.78rem;font-weight:500;padding:0.35rem 0.7rem;border-radius:6px;transition:0.2s}
+        .nav-links a:hover{color:var(--t1);background:rgba(255,255,255,0.04)}
+
+        /* ===== HERO — fullwidth split ===== */
+        .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+        .hero-left{display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:1}
+        .hero-right{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+        .hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(245,158,11,0.08) 0%,transparent 70%)}
+
+        .hero-tag{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:2rem;padding:0.4rem 1rem;border:1px solid rgba(245,158,11,0.2);border-radius:100px;width:fit-content}
+        .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 2s ease-in-out infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+        .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(3.5rem,6vw,5.5rem);font-weight:400;line-height:1.05;margin-bottom:1.5rem;color:var(--t1)}
+        .hero h1 span{background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-desc{font-size:1.1rem;color:var(--t2);max-width:480px;margin-bottom:3rem;font-weight:300}
+
+        .hero-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:420px}
+        .hero-kpi{padding:1.25rem;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,0.02)}
+        .hero-kpi-val{font-family:'Space Grotesk';font-size:1.6rem;font-weight:700;color:var(--amber)}
+        .hero-kpi-lbl{font-size:0.72rem;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-top:0.2rem}
+
+        /* hero right — big stats ring */
+        .hero-ring{width:340px;height:340px;position:relative;flex-shrink:0}
+        .hero-ring canvas{width:100%!important;height:100%!important}
+        .hero-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
+        .hero-ring-big{font-family:'DM Serif Display';font-size:3.5rem;color:var(--amber)}
+        .hero-ring-sub{font-size:0.8rem;color:var(--t3);text-align:center;max-width:120px}
+
+        /* ===== FULL-WIDTH SECTIONS ===== */
+        .fw{width:100%;padding:6rem 0}
+        .fw-dark{background:var(--bg-1)}
+        .fw-darker{background:var(--bg-0)}
+        .container{max-width:1440px;margin:0 auto;padding:0 2rem}
+
+        .stag{font-size:0.7rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:0.75rem}
+        .stitle{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:0.75rem;line-height:1.15}
+        .sdesc{font-size:1rem;color:var(--t2);max-width:550px}
+        .section-head{margin-bottom:3.5rem}
+        .section-head.center{text-align:center}
+        .section-head.center .sdesc{margin:0 auto}
+
+        /* ===== BENTO GRID ===== */
+        .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:1.25rem}
+        .bento>*{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:border-color 0.3s,transform 0.3s}
+        .bento>*:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+        .b-4{grid-column:span 4} .b-6{grid-column:span 6} .b-8{grid-column:span 8} .b-12{grid-column:span 12} .b-3{grid-column:span 3}
+
+        /* ===== STAT CARD ===== */
+        .stat-card .sc-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+        .stat-card .sc-val{font-family:'Space Grotesk';font-size:2rem;font-weight:700;line-height:1}
+        .stat-card .sc-lbl{font-size:0.82rem;color:var(--t2);margin-top:0.35rem}
+        .stat-card .sc-trend{display:inline-flex;align-items:center;gap:0.2rem;font-size:0.72rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:100px;margin-top:0.5rem;background:rgba(34,197,94,0.1);color:var(--green)}
+
+        /* ===== CHART CARD ===== */
+        .chart-card{position:relative}
+        .chart-card h4{font-family:'Space Grotesk';font-size:1rem;font-weight:600;margin-bottom:1.25rem}
+
+        /* ===== COMPETITOR ROWS ===== */
+        .comp-row{display:grid;grid-template-columns:200px 1fr 280px;align-items:start;gap:2rem;padding:2rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;transition:0.3s}
+        .comp-row:hover{border-color:var(--border-hover)}
+        .comp-left h3{font-family:'DM Serif Display';font-size:1.3rem;margin-bottom:0.25rem}
+        .comp-left .comp-price{font-size:0.8rem;color:var(--amber);font-weight:600;margin-bottom:0.5rem}
+        .comp-left .comp-score{font-size:0.72rem;color:var(--t3)}
+        .comp-left .comp-bar{height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:0.4rem;overflow:hidden}
+        .comp-left .comp-bar-fill{height:100%;border-radius:2px}
+        .comp-mid{font-size:0.85rem;color:var(--t2);line-height:1.7}
+        .comp-mid .tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.75rem}
+        .tag{padding:0.15rem 0.55rem;border-radius:5px;font-size:0.68rem;font-weight:500}
+        .tag-g{background:rgba(34,197,94,0.1);color:var(--green)}
+        .tag-r{background:rgba(239,68,68,0.1);color:var(--red)}
+        .comp-right{padding:1rem;background:rgba(245,158,11,0.04);border-left:2px solid var(--amber);border-radius:0 8px 8px 0;font-size:0.82rem;color:var(--t2)}
+        .comp-right strong{color:var(--amber)}
+
+        /* ===== LINEUP CARDS ===== */
+        .lineup-card{border-left:3px solid;padding-left:1.75rem;padding:1.75rem;padding-left:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;position:relative;overflow:hidden}
+        .lineup-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+        .lineup-card:nth-child(1)::before{background:var(--amber)} .lineup-card:nth-child(2)::before{background:var(--green)} .lineup-card:nth-child(3)::before{background:var(--gold)} .lineup-card:nth-child(4)::before{background:var(--beer-dark)} .lineup-card:nth-child(5)::before{background:var(--sky)}
+        .lineup-card .lc-tag{font-size:0.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.5rem}
+        .lineup-card h3{font-family:'DM Serif Display';font-size:1.35rem;margin-bottom:0.4rem}
+        .lineup-card .lc-desc{font-size:0.85rem;color:var(--t2);margin-bottom:1rem}
+        .lineup-card .lc-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
+        .lineup-card .lc-stat{font-size:0.78rem;color:var(--t3)}
+        .lineup-card .lc-stat strong{color:var(--t2);font-weight:600}
+
+        /* ===== GAP CARDS ===== */
+        .gap{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative}
+        .gap .gap-n{font-family:'DM Serif Display';font-size:3rem;position:absolute;top:1rem;right:1.5rem;opacity:0.06;color:var(--t1)}
+        .gap h4{font-size:1rem;font-weight:600;margin-bottom:0.5rem}
+        .gap p{font-size:0.85rem;color:var(--t2);line-height:1.7}
+
+        /* ===== ECON BLOCK ===== */
+        .econ-card{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:2rem}
+        .econ-card h4{font-family:'Space Grotesk';font-size:1.05rem;font-weight:600;margin-bottom:1.25rem}
+        .econ-row{display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.88rem}
+        .econ-row:last-child{border-bottom:none}
+        .econ-row .er-k{color:var(--t2)} .econ-row .er-v{font-family:'Space Grotesk';font-weight:600}
+        .econ-row.total{border-top:2px solid var(--amber);margin-top:0.5rem;padding-top:0.75rem}
+        .econ-row.total .er-k,.econ-row.total .er-v{font-weight:700;color:var(--t1);font-size:0.95rem}
+
+        /* ===== PRICE FLOW ===== */
+        .pflow{display:flex;align-items:center;justify-content:center;gap:0;margin:2.5rem 0;flex-wrap:wrap}
+        .pf-step{text-align:center;padding:1.25rem 1.5rem;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;min-width:140px}
+        .pf-step.active{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)}
+        .pf-val{font-family:'Space Grotesk';font-size:1.4rem;font-weight:700}
+        .pf-lbl{font-size:0.72rem;color:var(--t3);margin-top:0.15rem}
+        .pf-arr{font-size:1.2rem;color:var(--t3);padding:0 0.4rem}
+
+        /* ===== TIMELINE — horizontal ===== */
+        .htl{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;position:relative}
+        .htl::before{content:'';position:absolute;top:28px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--copper),var(--green),var(--sky));border-radius:1px}
+        .htl-item{position:relative;padding-top:3.5rem}
+        .htl-dot{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;border:3px solid var(--bg-0);z-index:1}
+        .htl-item .htl-phase{font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;text-align:center}
+        .htl-item h4{font-family:'DM Serif Display';font-size:1.1rem;text-align:center;margin-bottom:0.75rem}
+        .htl-tasks{display:flex;flex-direction:column;gap:0.35rem;padding:1.25rem;background:var(--bg-2);border:1px solid var(--border);border-radius:12px}
+        .htl-task{font-size:0.8rem;color:var(--t2);padding-left:0.75rem;position:relative}
+        .htl-task::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--t3);position:absolute;left:0;top:0.55rem}
+
+        /* ===== SYNERGY ===== */
+        .syn{display:flex;align-items:center;gap:1rem;padding:1.25rem;background:var(--bg-2);border:1px solid var(--border);border-radius:12px}
+        .syn-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(245,158,11,0.08);flex-shrink:0}
+        .syn h4{font-size:0.9rem;font-weight:600;margin-bottom:0.15rem}
+        .syn p{font-size:0.78rem;color:var(--t2)}
+
+        /* ===== REG ===== */
+        .reg{display:flex;gap:0.75rem;padding:1.15rem;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;align-items:start}
+        .reg-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);flex-shrink:0}
+        .reg h4{font-size:0.88rem;font-weight:600;margin-bottom:0.15rem}
+        .reg p{font-size:0.78rem;color:var(--t2)}
+
+        /* ===== CHECKLIST ===== */
+        .cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.6rem}
+        .cl-item{display:flex;align-items:center;gap:0.65rem;padding:0.85rem 1.1rem;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;font-size:0.85rem;color:var(--t2);cursor:pointer;user-select:none;transition:0.2s}
+        .cl-item:hover{background:var(--bg-3)}
+        .cl-box{width:18px;height:18px;border-radius:5px;border:2px solid var(--t3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:0.2s}
+        .cl-item:hover .cl-box{border-color:var(--amber)}
+        .cl-item.on .cl-box{background:var(--green);border-color:var(--green)}
+        .cl-item.on{opacity:0.5}
+        .cl-svg{display:none} .cl-item.on .cl-svg{display:block}
+
+        /* ===== AD SPLIT ===== */
+        .ad-split{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem}
+        .ad-block{padding:1.75rem;border-radius:14px;background:var(--bg-2);border:1px solid var(--border)}
+        .ad-block h4{font-size:0.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem}
+        .ad-block li{font-size:0.85rem;padding:0.3rem 0;padding-left:1rem;position:relative;list-style:none}
+        .ad-block li::before{content:'';position:absolute;left:0;top:0.6rem;width:5px;height:5px;border-radius:50%}
+        .ad-no li{color:var(--red)} .ad-no li::before{background:var(--red)}
+        .ad-yes li{color:var(--green)} .ad-yes li::before{background:var(--green)}
+
+        /* ===== CALLOUT ===== */
+        .callout{text-align:center;padding:5rem 2rem;position:relative}
+        .callout-text{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.35;max-width:750px;margin:0 auto;background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+        /* ===== FOOTER ===== */
+        .footer{text-align:center;padding:4rem 2rem;border-top:1px solid var(--border)}
+        .footer-brand{font-family:'DM Serif Display';font-size:2rem;color:var(--amber);letter-spacing:4px;margin-bottom:0.35rem}
+        .footer-sub{color:var(--t3);font-size:0.82rem}
+
+        /* ===== INSIGHT ===== */
+        .insight{background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.12);border-radius:14px;padding:1.75rem;margin-top:2rem}
+        .insight h4{color:var(--amber);font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.5rem}
+        .insight p{font-size:0.9rem;color:var(--t2);line-height:1.8}
+
+        /* ===== ANIMATIONS ===== */
+        .fi{opacity:0;transform:translateY(25px);transition:opacity .6s,transform .6s}
+        .fi.v{opacity:1;transform:translateY(0)}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1024px){
+            .bento{grid-template-columns:repeat(6,1fr)}
+            .b-4,.b-3{grid-column:span 3} .b-8{grid-column:span 6}
+            .htl{grid-template-columns:repeat(2,1fr)}
+        }
+        @media(max-width:768px){
+            .hero{grid-template-columns:1fr} .hero-left{padding:7rem 1.5rem 2rem} .hero-right{padding:0 1.5rem 3rem;justify-content:center}
+            .hero-ring{width:260px;height:260px}
+            .bento{grid-template-columns:1fr}
+            .b-4,.b-6,.b-8,.b-12,.b-3{grid-column:span 1}
+            .comp-row{grid-template-columns:1fr;gap:1rem}
+            .comp-right{border-left:none;border-top:2px solid var(--amber);border-radius:8px 8px 0 0}
+            .htl{grid-template-columns:1fr} .htl::before{display:none}
+            .nav-links{display:none}
+            .ad-split{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav-inner">
+    <div class="nav-brand">ЛыткаринЪ</div>
+    <ul class="nav-links">
+        <li><a href="#market">Рынок</a></li>
+        <li><a href="#comp">Конкуренты</a></li>
+        <li><a href="#gaps">Ниши</a></li>
+        <li><a href="#lineup">Линейка</a></li>
+        <li><a href="#econ">Экономика</a></li>
+        <li><a href="#roadmap">Дорожная карта</a></li>
+    </ul>
+</div></nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-left">
+        <div class="hero-tag">Исследование и стратегия</div>
+        <h1>Пивной бренд<br><span>ЛыткаринЪ</span></h1>
+        <p class="hero-desc">Подмосковная мануфактура. 260 рецептов — выбрали лучшие. Крафтовые стили по цене обычного пива.</p>
+        <div class="hero-kpis">
+            <div class="hero-kpi"><div class="hero-kpi-val">4-5</div><div class="hero-kpi-lbl">SKU на старте</div></div>
+            <div class="hero-kpi"><div class="hero-kpi-val">~100 &#8381;</div><div class="hero-kpi-lbl">Цена на полке</div></div>
+            <div class="hero-kpi"><div class="hero-kpi-val">0.5 л</div><div class="hero-kpi-lbl">Честный формат</div></div>
+            <div class="hero-kpi"><div class="hero-kpi-val">2-5 млн</div><div class="hero-kpi-lbl">Инвестиции</div></div>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="hero-ring">
+            <canvas id="heroRing"></canvas>
+            <div class="hero-ring-center">
+                <div class="hero-ring-big">750</div>
+                <div class="hero-ring-sub">млрд руб. рынок пива РФ</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CALLOUT -->
+<div class="callout fi">
+    <div class="callout-text">Национализация Балтики, уход Heineken, перестройка рынка. Сети ищут российских поставщиков. Историческое окно открыто.</div>
+</div>
+
+<!-- ===== РЫНОК — BENTO ===== -->
+<div class="fw fw-dark" id="market">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Рынок пива РФ</div><div class="stitle">Ключевые метрики</div><div class="sdesc">4-е место в мире. Кризис идентичности у корпоративных брендов — окно для новых игроков.</div></div>
+
+        <div class="bento fi">
+            <!-- stats -->
+            <div class="b-3 stat-card">
+                <div class="sc-icon" style="background:rgba(245,158,11,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+                <div class="sc-val" style="color:var(--amber)">4-е</div>
+                <div class="sc-lbl">Место в мире</div>
+            </div>
+            <div class="b-3 stat-card">
+                <div class="sc-icon" style="background:rgba(34,197,94,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <div class="sc-val" style="color:var(--green)">~750</div>
+                <div class="sc-lbl">Млн декалитров/год</div>
+                <div class="sc-trend">+2-4%/год</div>
+            </div>
+            <div class="b-3 stat-card">
+                <div class="sc-icon" style="background:rgba(56,189,248,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+                <div class="sc-val" style="color:var(--sky)">700-750</div>
+                <div class="sc-lbl">Млрд руб. розница</div>
+            </div>
+            <div class="b-3 stat-card">
+                <div class="sc-icon" style="background:rgba(239,68,68,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <div class="sc-val" style="color:var(--red)">2022</div>
+                <div class="sc-lbl">Carlsberg & Heineken ушли</div>
+            </div>
+
+            <!-- market share chart -->
+            <div class="b-6 chart-card">
+                <h4>Доли рынка</h4>
+                <div style="position:relative;height:220px"><canvas id="shareChart"></canvas></div>
+            </div>
+
+            <!-- price segments chart -->
+            <div class="b-6 chart-card">
+                <h4>Ценовые сегменты (банка 0.5 л)</h4>
+                <div style="position:relative;height:220px"><canvas id="segChart"></canvas></div>
+            </div>
+
+            <!-- positioning bubble -->
+            <div class="b-12 chart-card" style="padding-bottom:0">
+                <h4>Карта позиционирования — цена vs. крафтовость</h4>
+                <div style="position:relative;height:380px"><canvas id="posChart"></canvas></div>
+                <div class="insight" style="margin-bottom:1.75rem">
+                    <h4>Зона разрыва</h4>
+                    <p>Между 110 и 150 руб. — пустота. Масс-маркет заканчивается на ~115 руб., крафт начинается на ~140 руб. <strong style="color:var(--t1)">ЛыткаринЪ = крафтовые стили по цене обычного пива — "народный крафт".</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ТРЕНДЫ ===== -->
+<div class="fw fw-darker">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Тренды</div><div class="stitle">Что растёт, что падает</div></div>
+        <div class="bento fi">
+            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(34,197,94,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="sc-val" style="color:var(--green)">+20%</div><div class="sc-lbl">Нефильтрованное</div><div class="sc-trend">Тренд #1</div></div>
+            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(234,179,8,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L12 14"/><path d="M2 12s4-4 8-4c6 0 8 6 8 6"/></svg></div><div class="sc-val" style="color:var(--gold)">+15%</div><div class="sc-lbl">Пшеничное</div><div class="sc-trend">30-40% жен.</div></div>
+            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(56,189,248,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div><div class="sc-val" style="color:var(--sky)">+30%</div><div class="sc-lbl">Безалкогольное</div><div class="sc-trend">Мегатренд</div></div>
+            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(167,139,250,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="sc-val" style="color:var(--violet)">Банка</div><div class="sc-lbl">Банка > бутылка</div><div class="sc-trend">Премиумизация</div></div>
+
+            <!-- trends chart -->
+            <div class="b-12 chart-card">
+                <h4>Динамика стилей — рост год к году</h4>
+                <div style="position:relative;height:260px"><canvas id="trendsChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== КОНКУРЕНТЫ ===== -->
+<div class="fw fw-dark" id="comp">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Конкурентный анализ</div><div class="stitle">Ключевые игроки</div><div class="sdesc">Горизонтальные карточки — кто, сколько, слабые места и стратегия обхода</div></div>
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem" class="fi">
+            <div class="comp-row">
+                <div class="comp-left"><h3>Жигули Барное</h3><div class="comp-price">95-115 руб. &middot; 6+ SKU</div><div class="comp-score">Сила: 9/10 — главный бенчмарк</div><div class="comp-bar"><div class="comp-bar-fill" style="width:90%;background:var(--g-hero)"></div></div></div>
+                <div class="comp-mid">МПК, Мытищи. Ретро-советский минимализм. Собственный ресторан на Арбате. Формат 0.45л. Лагерный профиль.<div class="tags"><span class="tag tag-g">Мощная узнаваемость</span><span class="tag tag-g">Федеральное покрытие</span><span class="tag tag-r">Ретро ограничивает ЦА</span><span class="tag tag-r">0.45л — жульничество</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> честный 0.5л, привязка к конкретному месту, вариативная линейка (элевые стили), "соседи, не корпорация"</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-left"><h3>Хамовники</h3><div class="comp-price">95-115 руб. &middot; 6 SKU</div><div class="comp-score">Сила: 6/10 — модель для ЛыткаринЪ</div><div class="comp-bar"><div class="comp-bar-fill" style="width:60%;background:var(--g-gold)"></div></div></div>
+                <div class="comp-mid">МПК. Географический бренд — район Москвы. Европейские стили (Пилснер, Венское, Мюнхенское). Классический дизайн с геральдикой.<div class="tags"><span class="tag tag-g">Гео-бренд РАБОТАЕТ</span><span class="tag tag-g">Европейские стили</span><span class="tag tag-r">В тени Жигулей</span><span class="tag tag-r">0.45л</span></div></div>
+                <div class="comp-right"><strong>Урок:</strong> модель "география + европейские стили" работает. ЛыткаринЪ должен быть ЯРЧЕ и живее. Привязка к Подмосковью — эмоциональная</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-left"><h3>Kozel</h3><div class="comp-price">95-120 руб. &middot; 4 SKU</div><div class="comp-score">Сила: 8/10</div><div class="comp-bar"><div class="comp-bar-fill" style="width:80%;background:var(--green)"></div></div></div>
+                <div class="comp-mid">AB InBev Efes (лицензия). Реальная чешская история. Козёл — мощный маскот. Низкий ABV (3.7-4.0%). Лучшее тёмное в сегменте.<div class="tags"><span class="tag tag-g">Чешская история</span><span class="tag tag-g">Сильный маскот</span><span class="tag tag-r">Лицензионное</span><span class="tag tag-r">Нет элевых стилей</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> "Не лицензия, а своё. Сварено здесь, для вас." Более высокий ABV для тех, кому Kozel слишком лёгкий</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-left"><h3>Балтика 3 / 7</h3><div class="comp-price">75-110 руб. &middot; 2 SKU</div><div class="comp-score">Сила: 7-8/10 (инерция)</div><div class="comp-bar"><div class="comp-bar-fill" style="width:75%;background:rgba(255,255,255,0.15)"></div></div></div>
+                <div class="comp-mid">Национализирована. Узнаваемость ~100%, абсолютная дистрибуция. Безликий бренд, "дешёвая" ассоциация. ПЭТ девальвирует.<div class="tags"><span class="tag tag-g">~100% узнаваемость</span><span class="tag tag-r">Безликий</span><span class="tag tag-r">"Папино пиво"</span><span class="tag tag-r">ПЭТ</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> "анти-Балтика" — пиво с душой, историей и лицом. Только банка, никакого ПЭТ</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-left"><h3>Жатецкий Гусь</h3><div class="comp-price">80-105 руб. &middot; 4 SKU</div><div class="comp-score">Сила: 6/10</div><div class="comp-bar"><div class="comp-bar-fill" style="width:60%;background:var(--sky)"></div></div></div>
+                <div class="comp-mid">Балтика. "Чешское пиво, сваренное в России" — псевдо-импорт. Зелёная гамма, барочный стиль, маскот-гусь.<div class="tags"><span class="tag tag-g">Чёткая легенда</span><span class="tag tag-r">Не настоящее чешское</span><span class="tag tag-r">"Подделка"</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> быть честным — "Мы подмосковное пиво и гордимся этим." Честнее, чем "чешское из Петербурга"</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-left"><h3>Крафт</h3><div class="comp-price">130-220+ руб.</div><div class="comp-score">Сила: 6-7/10 (в нише)</div><div class="comp-bar"><div class="comp-bar-fill" style="width:65%;background:linear-gradient(90deg,var(--rose),var(--violet))"></div></div></div>
+                <div class="comp-mid">Горьковская, Василеостровская, AF Brew, Jaws. Задают тренды. IPA, стауты, портеры — 15+ SKU. Собственные тапрумы.<div class="tags"><span class="tag tag-g">Задают тренды</span><span class="tag tag-g">Лояльная аудитория</span><span class="tag tag-r">150-400 руб.</span><span class="tag tag-r">Ограниченная дистрибуция</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> крафтовые стили по 100-130 руб. в федеральных сетях. IPA, пшеничное, стаут за доступную цену</div>
+            </div>
+        </div>
+
+        <!-- Radar chart -->
+        <div class="bento fi" style="margin-top:2rem">
+            <div class="b-6 chart-card">
+                <h4>Сравнение — радар конкурентов</h4>
+                <div style="position:relative;height:320px"><canvas id="radarChart"></canvas></div>
+            </div>
+            <div class="b-6 chart-card">
+                <h4>Сводная таблица</h4>
+                <div style="overflow-x:auto">
+                    <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:0.5rem">
+                        <thead><tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:0.6rem 0.5rem;color:var(--t3);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase">Бренд</th><th style="text-align:left;padding:0.6rem 0.5rem;color:var(--t3);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase">Цена</th><th style="text-align:left;padding:0.6rem 0.5rem;color:var(--t3);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase">Стили</th><th style="text-align:left;padding:0.6rem 0.5rem;color:var(--t3);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase">Сила</th></tr></thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.5rem;color:var(--t1);font-weight:600">Жигули</td><td style="padding:0.5rem;color:var(--t2)">95-115</td><td style="padding:0.5rem;color:var(--t2)">Лагер, IPA, б/а</td><td style="padding:0.5rem;color:var(--amber)">9/10</td></tr>
+                            <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.5rem;color:var(--t1);font-weight:600">Хамовники</td><td style="padding:0.5rem;color:var(--t2)">95-115</td><td style="padding:0.5rem;color:var(--t2)">Пилснер, эль, вайцен</td><td style="padding:0.5rem;color:var(--amber)">6/10</td></tr>
+                            <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.5rem;color:var(--t1);font-weight:600">Kozel</td><td style="padding:0.5rem;color:var(--t2)">95-120</td><td style="padding:0.5rem;color:var(--t2)">Светлое, тёмное, б/а</td><td style="padding:0.5rem;color:var(--amber)">8/10</td></tr>
+                            <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.5rem;color:var(--t1);font-weight:600">Балтика 3/7</td><td style="padding:0.5rem;color:var(--t2)">75-110</td><td style="padding:0.5rem;color:var(--t2)">Лагер</td><td style="padding:0.5rem;color:var(--t2)">7-8/10</td></tr>
+                            <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.5rem;color:var(--t1);font-weight:600">Жатецкий Гусь</td><td style="padding:0.5rem;color:var(--t2)">80-105</td><td style="padding:0.5rem;color:var(--t2)">Лагер, нефильтр</td><td style="padding:0.5rem;color:var(--t2)">6/10</td></tr>
+                            <tr><td style="padding:0.5rem;color:var(--t1);font-weight:600">Крафт</td><td style="padding:0.5rem;color:var(--t2)">130-220</td><td style="padding:0.5rem;color:var(--t2)">IPA, стаут, портер</td><td style="padding:0.5rem;color:var(--t2)">6-7/10</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== НИШИ ===== -->
+<div class="fw fw-darker" id="gaps">
+    <div class="container">
+        <div class="section-head center fi"><div class="stag">Gaps Analysis</div><div class="stitle">6 незанятых ниш</div><div class="sdesc">Пустые позиции, которые ЛыткаринЪ может занять первым</div></div>
+        <div class="bento fi">
+            <div class="b-4 gap"><div class="gap-n">01</div><h4>Крафтовые стили по цене массового</h4><p>IPA, стаут, портер за 110-130 руб. в сетях. Крафт — 150-220 руб. Масс-маркет не предлагает. Огромный потенциал.</p></div>
+            <div class="b-4 gap"><div class="gap-n">02</div><h4>Подмосковный бренд</h4><p>НИ ОДНОГО пивного бренда из Подмосковья. Хамовники — Москва. 8+ млн жителей МО — белое пятно на карте.</p></div>
+            <div class="b-4 gap"><div class="gap-n">03</div><h4>Честный формат 0.5 л</h4><p>Большинство перешли на 0.45л. Бренд с полными 0.5л — маркетинговый приём. "Мы не жульничаем с объёмом."</p></div>
+            <div class="b-4 gap"><div class="gap-n">04</div><h4>Сезонные в среднем сегменте</h4><p>Крафт работает с сезонными релизами. В среднем сегменте этого нет. Зимний стаут, летний вайцен = hype.</p></div>
+            <div class="b-4 gap"><div class="gap-n">05</div><h4>Пиво для еды (food pairing)</h4><p>Ни один бренд в среднем сегменте не позиционируется как "пиво к еде". Крафт делает, но дорого.</p></div>
+            <div class="b-4 gap"><div class="gap-n">06</div><h4>Безалкогольный крафт</h4><p>Б/а IPA, б/а пшеничное, б/а стаут по 100-120 руб. — полностью свободная ниша. Мегатренд ЗОЖ.</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ЛИНЕЙКА ===== -->
+<div class="fw fw-dark" id="lineup">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Продуктовая линейка</div><div class="stitle">5 SKU на старте</div><div class="sdesc">260 рецептов — выбрали лучшие. Каждый сорт закрывает конкретную нишу.</div></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem" class="fi">
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--amber)">Базовый SKU</div><h3>ЛыткаринЪ Светлое</h3><div class="lc-desc">Чешский светлый лагер. Основа линейки — сбалансированный, питкий, классика.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.8%</div><div class="lc-stat"><strong>Стиль:</strong> Чешский лагер</div><div class="lc-stat"><strong>~100 руб.</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--green)">Тренд #1</div><h3>ЛыткаринЪ Нефильтрованное</h3><div class="lc-desc">Самый быстрорастущий стиль (+15-20%/год). Мутное, ароматное, с характером.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.5%</div><div class="lc-stat"><strong>Стиль:</strong> Нефильтр. лагер</div><div class="lc-stat"><strong>+20%/год</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--gold)">Расширение ЦА</div><h3>ЛыткаринЪ Пшеничное</h3><div class="lc-desc">Хефевайцен. Привлекает женщин (30-40% покупателей). Мягкое, фруктовое, банановый тон.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.7%</div><div class="lc-stat"><strong>Стиль:</strong> Вайцен</div><div class="lc-stat"><strong>+15%/год</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--beer-dark)">Полнота линейки</div><h3>ЛыткаринЪ Тёмное</h3><div class="lc-desc">Дункель. Карамельный, насыщенный, плотный. Для ценителей тёмного.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 5.0%</div><div class="lc-stat"><strong>Стиль:</strong> Дункель</div><div class="lc-stat"><strong>~100-110 руб.</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--sky)">Мегатренд</div><h3>ЛыткаринЪ Безалкогольное</h3><div class="lc-desc">Б/А лагер. Рост +25-30%/год. Реклама без ограничений ФЗ-38. Маркетинговый локомотив.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> &lt;0.5%</div><div class="lc-stat"><strong>Стиль:</strong> Б/А лагер</div><div class="lc-stat"><strong>+30%/год</strong></div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ЭКОНОМИКА ===== -->
+<div class="fw fw-darker" id="econ">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Экономика</div><div class="stitle">Цифры и маржинальность</div></div>
+        <div class="bento fi">
+            <div class="b-6 econ-card">
+                <h4>Себестоимость банки 0.5 л</h4>
+                <div class="econ-row"><span class="er-k">Сырьё (солод, хмель, дрожжи)</span><span class="er-v">8-12 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Банка алюм. 0.5 л</span><span class="er-v">8-10 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Печать / этикетка</span><span class="er-v">2-3 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Акциз (~26 руб./л)</span><span class="er-v">~13 руб.</span></div>
+                <div class="econ-row"><span class="er-k">ЕГАИС + Честный ЗНАК</span><span class="er-v">~1 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Энергия, амортизация</span><span class="er-v">3-5 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Труд</span><span class="er-v">2-4 руб.</span></div>
+                <div class="econ-row total"><span class="er-k">ИТОГО</span><span class="er-v" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">~37-48 руб.</span></div>
+            </div>
+            <div class="b-6 econ-card">
+                <h4>Инвестиции в запуск</h4>
+                <div class="econ-row"><span class="er-k">Разработка рецептур</span><span class="er-v" style="color:var(--green)">0 (технолог в штате)</span></div>
+                <div class="econ-row"><span class="er-k">Дизайн упаковки (5 SKU)</span><span class="er-v">100 тыс.</span></div>
+                <div class="econ-row"><span class="er-k">Первая партия</span><span class="er-v">400 тыс.-1 млн</span></div>
+                <div class="econ-row"><span class="er-k">ЕГАИС + маркировка</span><span class="er-v" style="color:var(--green)">0 (уже подключено)</span></div>
+                <div class="econ-row"><span class="er-k">Маркетинг запуска (6 мес.)</span><span class="er-v">500 тыс.-1 млн</span></div>
+                <div class="econ-row"><span class="er-k">Оборотный капитал</span><span class="er-v">1-3 млн</span></div>
+                <div class="econ-row total"><span class="er-k">ИТОГО</span><span class="er-v" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">~2-5 млн руб.</span></div>
+            </div>
+
+            <!-- cost breakdown chart -->
+            <div class="b-6 chart-card">
+                <h4>Структура себестоимости</h4>
+                <div style="position:relative;height:260px"><canvas id="costChart"></canvas></div>
+            </div>
+
+            <!-- margin chart -->
+            <div class="b-6 chart-card">
+                <h4>Маржинальность по каналам</h4>
+                <div style="position:relative;height:260px"><canvas id="marginChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="pflow fi">
+            <div class="pf-step"><div class="pf-val">~42</div><div class="pf-lbl">Себестоимость</div></div>
+            <div class="pf-arr">&rarr;</div>
+            <div class="pf-step"><div class="pf-val" style="color:var(--amber)">55-65</div><div class="pf-lbl">Отпускная (маржа 30-50%)</div></div>
+            <div class="pf-arr">&rarr;</div>
+            <div class="pf-step"><div class="pf-val">65-80</div><div class="pf-lbl">+ Дистрибьютор</div></div>
+            <div class="pf-arr">&rarr;</div>
+            <div class="pf-step active"><div class="pf-val" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">95-110</div><div class="pf-lbl">На полке</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ДИСТРИБУЦИЯ + РЕКЛАМА ===== -->
+<div class="fw fw-dark">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Дистрибуция и продвижение</div><div class="stitle">Каналы и ограничения</div></div>
+
+        <div class="bento fi">
+            <div class="b-4" style="padding:0;border:none;background:none">
+                <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
+                    <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:1rem">Этап 1: 0-6 мес.</div>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Локальный запуск</h4>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
+                        <div>Несетевая розница (Лыткарино, Люберцы)</div>
+                        <div>ВкусВилл — бесплатный листинг</div>
+                        <div>Тапрум при заводе</div>
+                        <div>HoReCa — кеговое пиво</div>
+                    </div>
+                </div>
+            </div>
+            <div class="b-4" style="padding:0;border:none;background:none">
+                <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
+                    <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:1rem">Этап 2: 6-12 мес.</div>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Подмосковье</h4>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
+                        <div>Пятёрочка / Перекрёсток — МО-кластер</div>
+                        <div>Локальные сети (Верный, ДИКСИ)</div>
+                        <div>Дистрибьюторы (Лудинг, МБГ)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="b-4" style="padding:0;border:none;background:none">
+                <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
+                    <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1rem">Этап 3: 12-24 мес.</div>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Москва и ЦФО</h4>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
+                        <div>Федеральные сети — масштабирование</div>
+                        <div>Региональные сети ЦФО</div>
+                        <div>Анализ продаж, корректировка</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-split fi">
+            <div class="ad-block ad-no"><h4 style="color:var(--red)">Запрещено (ФЗ-38)</h4><ul><li>ТВ, радио, наружная реклама</li><li>Интернет-реклама</li><li>Участие людей / животных</li><li>Реклама несовершеннолетним</li></ul></div>
+            <div class="ad-block ad-yes"><h4 style="color:var(--green)">Разрешено</h4><ul><li>POS-материалы в местах продажи</li><li>Telegram — контент о пивной культуре</li><li>ВК-сообщества (с ограничениями)</li><li>Б/А линейку рекламировать СВОБОДНО</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== РЕГУЛЯТОРИКА ===== -->
+<div class="fw fw-darker">
+    <div class="container">
+        <div class="section-head center fi"><div class="stag">Регуляторика</div><div class="stitle">Требования и стандарты</div></div>
+        <div class="bento fi">
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h4>Лицензия</h4><p>НЕ требуется для пива. Только уведомление РАТК.</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="9"/><rect x="14" y="7" width="3" height="5"/></svg></div><div><h4>ЕГАИС</h4><p>Обязательно. ~300-500 тыс. руб. (уже подключено).</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h4>Честный ЗНАК</h4><p>DataMatrix. Оборудование установлено.</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div><h4>Акцизы</h4><p>~26 руб./л (0.5-8.6%). ~13 руб. на банку.</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div><h4>Маркировка</h4><p>"Чрезмерное употребление алкоголя вредит здоровью".</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><h4>Декларирование</h4><p>~30-50 тыс. руб. Обязательно.</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ДОРОЖНАЯ КАРТА — горизонтальная ===== -->
+<div class="fw fw-dark" id="roadmap">
+    <div class="container">
+        <div class="section-head center fi"><div class="stag">Дорожная карта</div><div class="stitle">От подготовки до масштаба</div><div class="sdesc">Запускать через 3-4 мес. после ФИЛЛС — когда отлажены маркировка и логистика</div></div>
+        <div class="htl fi">
+            <div class="htl-item"><div class="htl-dot" style="background:var(--amber)"></div><div class="htl-phase" style="color:var(--amber)">Мес. 1-2</div><h4>Подготовка</h4><div class="htl-tasks"><div class="htl-task">Финализация рецептур (4-5 SKU)</div><div class="htl-task">Дизайн банок</div><div class="htl-task">ЕГАИС, Честный ЗНАК — настройка</div></div></div>
+            <div class="htl-item"><div class="htl-dot" style="background:var(--copper)"></div><div class="htl-phase" style="color:var(--copper)">Мес. 2-3</div><h4>Запуск</h4><div class="htl-tasks"><div class="htl-task">Первая партия</div><div class="htl-task">Локальная розница</div><div class="htl-task">ВкусВилл + тапрум</div><div class="htl-task">HoReCa (кеги)</div></div></div>
+            <div class="htl-item"><div class="htl-dot" style="background:var(--green)"></div><div class="htl-phase" style="color:var(--green)">Мес. 3-6</div><h4>Расширение</h4><div class="htl-tasks"><div class="htl-task">Локальные сети МО</div><div class="htl-task">Дистрибьюторы</div><div class="htl-task">HoReCa Москва</div></div></div>
+            <div class="htl-item"><div class="htl-dot" style="background:var(--sky)"></div><div class="htl-phase" style="color:var(--sky)">Мес. 6-12</div><h4>Масштаб</h4><div class="htl-tasks"><div class="htl-task">Пятёрочка / Перекрёсток</div><div class="htl-task">Региональные сети</div><div class="htl-task">Анализ и корректировка</div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== СИНЕРГИЯ ===== -->
+<div class="fw fw-darker">
+    <div class="container">
+        <div class="section-head center fi"><div class="stag">Синергия</div><div class="stitle">ЛыткаринЪ + ФИЛЛС</div><div class="sdesc">Два бренда одного завода усиливают друг друга</div></div>
+        <div class="bento fi">
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></div><div><h4>Общее производство</h4><p>Единый завод — пиво + лимонады</p></div></div>
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div><h4>Общая дистрибуция</h4><p>Одни оптовики и сети = сильнее позиция</p></div></div>
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div><h4>Перекрёстный маркетинг</h4><p>ФИЛЛС продвигает ЛыткаринЪ без ФЗ-38</p></div></div>
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h4>Экскурсии</h4><p>"Попробуй всё: пиво + лимонады"</p></div></div>
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg></div><div><h4>HoReCa</h4><p>Полный пакет: алкогольное + безалкогольное</p></div></div>
+            <div class="b-4 syn"><div class="syn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div><h4>Маркетплейсы</h4><p>Наборы "ФИЛЛС + ЛыткаринЪ"</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ЧЕК-ЛИСТ ===== -->
+<div class="fw fw-dark">
+    <div class="container">
+        <div class="section-head center fi"><div class="stag">Чек-лист</div><div class="stitle">Готовность к запуску</div></div>
+        <div class="cl fi">
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Рецептуры утверждены (4-5 SKU)</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Дизайн банок финализирован</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Уведомление РАТК подано</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>ЕГАИС подключена, счётчики установлены</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Честный ЗНАК — оборудование готово</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Декларация о соответствии получена</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Предупредительная надпись на упаковке</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Акцизный учёт настроен</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Дистрибьюторские договоры подписаны</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Тапрум при заводе готов</div>
+            <div class="cl-item"><div class="cl-box"><svg class="cl-svg" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>Тестовая партия одобрена по качеству</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ИТОГ ===== -->
+<div class="callout fi" style="padding:6rem 2rem">
+    <div class="stag" style="text-align:center;margin-bottom:1.5rem">Итоговый вывод</div>
+    <div class="callout-text">ЛыткаринЪ — народный крафт. Пиво с характером, историей и разнообразием стилей по цене обычного пива. Рынок готов. Окно открыто.</div>
+    <div class="bento fi" style="max-width:1000px;margin:3rem auto 0">
+        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--amber);margin-bottom:0.5rem">Локальность + 0.5 л</div><div style="font-size:0.9rem;color:var(--t2)">"Мы из Лыткарино, ваши соседи. Честный формат, честный вкус."</div></div>
+        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--green);margin-bottom:0.5rem">Крафт по 100-130 руб.</div><div style="font-size:0.9rem;color:var(--t2)">IPA, пшеничное, стаут в сетях. 260 рецептов — УТП, которого ни у кого нет.</div></div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-brand">ЛыткаринЪ</div>
+    <div class="footer-sub">Подмосковная мануфактура &middot; 260 рецептов — выбрали лучшие &middot; Апрель 2026</div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.08});
+document.querySelectorAll('.fi').forEach(e=>obs.observe(e));
+
+// Hero ring
+// Hero ring — fixed size, no responsive
+(function(){
+    var c=document.getElementById('heroRing');
+    var w=c.parentElement.offsetWidth||340;
+    c.width=w; c.height=w;
+    c.style.width=w+'px'; c.style.height=w+'px';
+    new Chart(c,{
+        type:'doughnut',
+        data:{labels:['AB InBev Efes','Балтика','Арнест','МПК','Региональные/крафт','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderColor:'#080706',borderWidth:3,hoverOffset:6}]},
+        options:{responsive:false,maintainAspectRatio:false,cutout:'78%',animation:{duration:1200},plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',borderColor:'rgba(200,170,100,0.1)',borderWidth:1,cornerRadius:8,padding:12,callbacks:{label:function(c){return ' '+c.label+': '+c.raw+'%'}}}}}
+    });
+})();
+
+// Market share
+new Chart(document.getElementById('shareChart'),{
+    type:'bar',
+    data:{labels:['AB InBev\nEfes','Балтика','Арнест','МПК','Крафт/\nрегион.','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderRadius:6,barThickness:28}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',cornerRadius:8}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'#a89e88',font:{size:11}}}}}
+});
+
+// Price segments
+new Chart(document.getElementById('segChart'),{
+    type:'bar',
+    data:{labels:['Эконом\n50-75','Средний-\nнижний\n75-100','Средний\n100-130','Средний-\nверхний\n130-170','Премиум\n170+'],datasets:[{label:'Доля рынка',data:[30,25,20,12,13],backgroundColor:['rgba(255,255,255,0.08)','rgba(255,255,255,0.08)','#f59e0b','rgba(255,255,255,0.08)','rgba(255,255,255,0.08)'],borderRadius:6,barThickness:32}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',cornerRadius:8}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#a89e88',font:{size:10}}}}}
+});
+
+// Positioning bubble
+new Chart(document.getElementById('posChart'),{
+    type:'bubble',
+    data:{datasets:[
+        {label:'Жигули',data:[{x:4,y:105,r:16}],backgroundColor:'rgba(245,158,11,0.5)',borderColor:'rgba(245,158,11,0.7)',borderWidth:2},
+        {label:'Хамовники',data:[{x:5.5,y:105,r:10}],backgroundColor:'rgba(234,179,8,0.4)',borderColor:'rgba(234,179,8,0.6)',borderWidth:2},
+        {label:'Балтика 3',data:[{x:2,y:85,r:18}],backgroundColor:'rgba(255,255,255,0.1)',borderColor:'rgba(255,255,255,0.2)',borderWidth:2},
+        {label:'Kozel',data:[{x:5,y:110,r:14}],backgroundColor:'rgba(34,197,94,0.4)',borderColor:'rgba(34,197,94,0.6)',borderWidth:2},
+        {label:'Жатецкий Гусь',data:[{x:4,y:95,r:10}],backgroundColor:'rgba(56,189,248,0.3)',borderColor:'rgba(56,189,248,0.5)',borderWidth:2},
+        {label:'Горьковская',data:[{x:8,y:155,r:9}],backgroundColor:'rgba(251,113,133,0.4)',borderColor:'rgba(251,113,133,0.6)',borderWidth:2},
+        {label:'Василеостровская',data:[{x:8.5,y:185,r:8}],backgroundColor:'rgba(167,139,250,0.4)',borderColor:'rgba(167,139,250,0.6)',borderWidth:2},
+        {label:'ЛыткаринЪ',data:[{x:7,y:115,r:14}],backgroundColor:'rgba(245,158,11,0.7)',borderColor:'#f59e0b',borderWidth:3},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a89e88',font:{size:10,family:'Inter'},padding:12,usePointStyle:true,pointStyle:'circle'},position:'bottom'},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',borderColor:'rgba(200,170,100,0.1)',borderWidth:1,cornerRadius:8,callbacks:{label:function(c){return c.dataset.label+': стиль '+c.raw.x+'/10, цена '+c.raw.y+' руб.'}}}},scales:{x:{title:{display:true,text:'Крафтовость \u2192',color:'#6b6050',font:{size:11}},min:0,max:10,grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#6b6050',font:{size:10}}},y:{title:{display:true,text:'\u2191 Цена (руб.)',color:'#6b6050',font:{size:11}},min:60,max:210,grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#6b6050',font:{size:10}}}}}
+});
+
+// Trends
+new Chart(document.getElementById('trendsChart'),{
+    type:'bar',
+    data:{labels:['Нефильтрованное','Безалкогольное','Пшеничное','Банка (формат)','Премиумизация','Евролагер','ПЭТ 1.5-2.5л','Крепкое 8-9%'],
+        datasets:[{data:[20,30,15,12,8,-5,-15,-20],backgroundColor:function(ctx){return ctx.raw>=0?'rgba(34,197,94,0.6)':'rgba(239,68,68,0.5)'},borderRadius:6,barThickness:24}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',cornerRadius:8,callbacks:{label:function(c){return (c.raw>0?'+':'')+c.raw+'%/год'}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return (v>0?'+':'')+v+'%'}}},y:{grid:{display:false},ticks:{color:'#a89e88',font:{size:11}}}}}
+});
+
+// Radar
+new Chart(document.getElementById('radarChart'),{
+    type:'radar',
+    data:{labels:['Узнаваемость','Дистрибуция','Разнообразие стилей','Дизайн','Локальность','Цена/качество'],
+        datasets:[
+            {label:'Жигули',data:[9,9,6,7,3,7],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#f59e0b'},
+            {label:'Kozel',data:[8,8,4,7,2,7],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#22c55e'},
+            {label:'Крафт',data:[4,3,9,8,6,4],borderColor:'#fb7185',backgroundColor:'rgba(251,113,133,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#fb7185'},
+            {label:'ЛыткаринЪ (цель)',data:[3,3,8,8,10,9],borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.1)',borderWidth:2,borderDash:[5,5],pointRadius:4,pointBackgroundColor:'#fbbf24'}
+        ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a89e88',font:{size:10},padding:12,usePointStyle:true}},tooltip:{backgroundColor:'#28241d',cornerRadius:8}},scales:{r:{angleLines:{color:'rgba(255,255,255,0.05)'},grid:{color:'rgba(255,255,255,0.05)'},pointLabels:{color:'#a89e88',font:{size:10}},ticks:{display:false},min:0,max:10}}}
+});
+
+// Cost breakdown
+new Chart(document.getElementById('costChart'),{
+    type:'doughnut',
+    data:{labels:['Акциз','Сырьё','Банка','Энергия','Печать','Труд','ЕГАИС/ЗНАК'],datasets:[{data:[13,10,9,4,2.5,3,1],backgroundColor:['#ef4444','#f59e0b','#38bdf8','#a78bfa','#22c55e','#fb7185','rgba(255,255,255,0.08)'],borderColor:'#161411',borderWidth:3,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#a89e88',font:{size:10},padding:10,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'#28241d',cornerRadius:8,callbacks:{label:function(c){return ' '+c.label+': ~'+c.raw+' руб.'}}}}}
+});
+
+// Margin
+new Chart(document.getElementById('marginChart'),{
+    type:'bar',
+    data:{labels:['Прямые\n(тапрум)','HoReCa\n(кеги)','Несетевая\nрозница','Сети\n(Пятёрочка)','Маркетплейсы'],datasets:[
+        {label:'Себестоимость',data:[42,42,42,42,42],backgroundColor:'rgba(255,255,255,0.06)',borderRadius:6},
+        {label:'Маржа',data:[38,25,15,12,10],backgroundColor:['rgba(34,197,94,0.6)','rgba(167,139,250,0.6)','rgba(56,189,248,0.6)','rgba(245,158,11,0.6)','rgba(251,113,133,0.6)'],borderRadius:6}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return v+' руб.'}}},y:{stacked:true,grid:{display:false},ticks:{color:'#a89e88',font:{size:10}}}},plugins:{legend:{labels:{color:'#a89e88',font:{size:10},usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'#28241d',cornerRadius:8}}}
+});
+
+// Checklist
+document.querySelectorAll('.cl-item').forEach(function(i){i.addEventListener('click',function(){i.classList.toggle('on')})});
+</script>
+</body>
+</html>
