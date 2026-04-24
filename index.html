@@ -215,6 +215,75 @@
         .insight h4{color:var(--amber);font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.5rem}
         .insight p{font-size:0.9rem;color:var(--t2);line-height:1.8}
 
+        /* ===== CRITICAL UPDATES 2025 ===== */
+        .crit-wrap{background:linear-gradient(135deg,rgba(239,68,68,0.05) 0%,rgba(245,158,11,0.04) 100%);border:1px solid rgba(239,68,68,0.18);border-radius:20px;padding:2.5rem;margin:2rem 0}
+        .crit-head{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem}
+        .crit-head .ic{width:34px;height:34px;border-radius:10px;background:rgba(239,68,68,0.18);color:#ef4444;display:inline-flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:1.2rem}
+        .crit-head h3{font-family:'DM Serif Display';font-size:1.5rem;color:#ef4444}
+        .crit-wrap>.sub{color:var(--t2);font-size:0.95rem;margin-bottom:1.5rem}
+
+        .holdings-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem}
+        .holding{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;position:relative;overflow:hidden}
+        .holding::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-fire)}
+        .holding .year{font-family:'Space Grotesk';font-size:0.65rem;font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:0.35rem}
+        .holding h4{font-family:'DM Serif Display';font-size:1.1rem;margin-bottom:0.25rem;line-height:1.25}
+        .holding .old{font-size:0.75rem;color:var(--t3);text-decoration:line-through;margin-bottom:0.35rem}
+        .holding p{font-size:0.82rem;color:var(--t2);line-height:1.55}
+        .holding p strong{color:var(--t1)}
+
+        .big-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:1.5rem 0 2rem}
+        .big-stat{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;position:relative;overflow:hidden}
+        .big-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g-hero)}
+        .big-stat-val{font-family:'DM Serif Display';font-size:2rem;line-height:1;background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .big-stat-lbl{font-size:0.72rem;color:var(--t3);margin-top:0.5rem;line-height:1.4}
+
+        /* ===== ПОДМОСКОВНЫЙ КРАФТ ===== */
+        .mo-craft-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+        @media(max-width:900px){.mo-craft-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:600px){.mo-craft-grid{grid-template-columns:1fr}}
+        .mo-craft{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;overflow:hidden}
+        .mo-craft::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+        .mo-craft.ultra::before{background:linear-gradient(to bottom,#ef4444,#a855f7)}
+        .mo-craft.high::before{background:linear-gradient(to bottom,#fb923c,#fbbf24)}
+        .mo-craft.mid::before{background:linear-gradient(to bottom,#22c55e,#38bdf8)}
+        .mo-craft .zone-pill{display:inline-block;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;padding:0.2rem 0.55rem;border-radius:4px;margin-bottom:0.5rem}
+        .mo-craft.ultra .zone-pill{background:rgba(239,68,68,0.12);color:#ef4444}
+        .mo-craft.high .zone-pill{background:rgba(251,146,60,0.12);color:#fb923c}
+        .mo-craft.mid .zone-pill{background:rgba(34,197,94,0.12);color:#22c55e}
+        .mo-craft h4{font-family:'DM Serif Display';font-size:1.2rem;margin-bottom:0.35rem}
+        .mo-craft .city{font-size:0.75rem;color:var(--t3);margin-bottom:0.75rem}
+        .mo-craft p{font-size:0.85rem;color:var(--t2);line-height:1.6}
+        .mo-craft .price{display:inline-block;font-family:'Space Grotesk';font-weight:700;color:var(--amber);font-size:0.85rem;margin-top:0.75rem;padding:0.25rem 0.65rem;background:rgba(245,158,11,0.08);border-radius:6px}
+
+        /* ===== СИДР БЛОК ===== */
+        .cider-wrap{background:linear-gradient(135deg,rgba(34,197,94,0.06) 0%,rgba(251,191,36,0.04) 100%);border:1px solid rgba(34,197,94,0.2);border-radius:20px;padding:2.5rem;margin:2rem 0;position:relative;overflow:hidden}
+        .cider-wrap::after{content:'';position:absolute;right:-50px;top:-50px;width:300px;height:300px;background:radial-gradient(circle,rgba(34,197,94,0.08) 0%,transparent 70%);pointer-events:none}
+        .cider-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:100px;background:rgba(34,197,94,0.18);color:var(--green);font-size:0.72rem;font-weight:700;letter-spacing:1.5px;margin-bottom:1rem}
+        .cider-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+        .cider-wrap h3{font-family:'DM Serif Display';font-size:1.8rem;margin-bottom:0.5rem;background:linear-gradient(135deg,#22c55e,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .cider-wrap .sub{color:var(--t2);font-size:0.95rem;margin-bottom:2rem;max-width:700px}
+        .cider-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;position:relative;z-index:1}
+        .cider-facts{display:flex;flex-direction:column;gap:0.9rem}
+        .cider-fact{display:flex;gap:0.8rem;padding:1rem 1.25rem;background:var(--bg-2);border:1px solid var(--border);border-radius:12px}
+        .cider-fact .num{font-family:'DM Serif Display';font-size:1.8rem;color:var(--green);line-height:1;min-width:75px}
+        .cider-fact .txt{font-size:0.82rem;color:var(--t2);line-height:1.55}
+        .cider-fact .txt strong{color:var(--t1)}
+
+        /* ===== BEER CHANNELS MATRIX ===== */
+        .alko-warning{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:14px;padding:1.5rem;margin:2rem 0}
+        .alko-warning h4{color:#ef4444;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;margin-bottom:0.75rem}
+        .alko-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.5rem;list-style:none}
+        .alko-list li{padding:0.4rem 0.75rem;background:rgba(239,68,68,0.05);border-radius:8px;font-size:0.82rem;color:#ef4444}
+        .alko-list li::before{content:'✕ '}
+
+        .kib-spotlight{background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(234,179,8,0.04) 100%);border:1px solid rgba(245,158,11,0.25);border-radius:16px;padding:2rem;margin:2rem 0}
+        .kib-spotlight .tag{font-size:0.7rem;font-weight:700;letter-spacing:2px;color:var(--amber);margin-bottom:0.5rem}
+        .kib-spotlight h4{font-family:'DM Serif Display';font-size:1.3rem;margin-bottom:1rem}
+        .kib-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+        .kib-stat{text-align:center;padding:1rem;background:var(--bg-2);border-radius:10px}
+        .kib-stat-val{font-family:'Space Grotesk';font-size:1.4rem;font-weight:700;color:var(--amber)}
+        .kib-stat-lbl{font-size:0.72rem;color:var(--t3);margin-top:0.3rem;line-height:1.4}
+
         /* ===== ANIMATIONS ===== */
         .fi{opacity:0;transform:translateY(25px);transition:opacity .6s,transform .6s}
         .fi.v{opacity:1;transform:translateY(0)}
@@ -235,6 +304,20 @@
             .htl{grid-template-columns:1fr} .htl::before{display:none}
             .nav-links{display:none}
             .ad-split{grid-template-columns:1fr}
+            .big-stats{grid-template-columns:repeat(2,1fr)}
+            .big-stat{padding:1rem} .big-stat-val{font-size:1.6rem}
+            .crit-wrap,.cider-wrap{padding:1.5rem;border-radius:16px}
+            .cider-row{grid-template-columns:1fr}
+            .cider-wrap h3{font-size:1.4rem}
+            .kib-stats{grid-template-columns:1fr}
+            .alko-list{grid-template-columns:1fr}
+            .fw{padding:4rem 0}
+            .container{padding:0 1.25rem}
+        }
+        @media(max-width:480px){
+            .big-stats{grid-template-columns:1fr}
+            .holdings-row{grid-template-columns:1fr}
+            .mo-craft-grid{grid-template-columns:1fr}
         }
     </style>
 </head>
@@ -244,12 +327,14 @@
 <nav class="nav"><div class="nav-inner">
     <div class="nav-brand">ЛыткаринЪ</div>
     <ul class="nav-links">
+        <li><a href="#critical2025">2025</a></li>
         <li><a href="#market">Рынок</a></li>
         <li><a href="#comp">Конкуренты</a></li>
-        <li><a href="#gaps">Ниши</a></li>
+        <li><a href="#mo-craft">МО-крафт</a></li>
         <li><a href="#lineup">Линейка</a></li>
         <li><a href="#econ">Экономика</a></li>
-        <li><a href="#roadmap">Дорожная карта</a></li>
+        <li><a href="#cider">Сидр</a></li>
+        <li><a href="#roadmap">Карта</a></li>
     </ul>
 </div></nav>
 
@@ -261,8 +346,8 @@
         <p class="hero-desc">Подмосковная мануфактура. 260 рецептов — выбрали лучшие. Крафтовые стили по цене обычного пива.</p>
         <div class="hero-kpis">
             <div class="hero-kpi"><div class="hero-kpi-val">4-5</div><div class="hero-kpi-lbl">SKU на старте</div></div>
-            <div class="hero-kpi"><div class="hero-kpi-val">~100 &#8381;</div><div class="hero-kpi-lbl">Цена на полке</div></div>
-            <div class="hero-kpi"><div class="hero-kpi-val">0.5 л</div><div class="hero-kpi-lbl">Честный формат</div></div>
+            <div class="hero-kpi"><div class="hero-kpi-val">110-130 &#8381;</div><div class="hero-kpi-lbl">Цена на полке (2025)</div></div>
+            <div class="hero-kpi"><div class="hero-kpi-val">0.45 л</div><div class="hero-kpi-lbl">Стандарт сегмента</div></div>
             <div class="hero-kpi"><div class="hero-kpi-val">2-5 млн</div><div class="hero-kpi-lbl">Инвестиции</div></div>
         </div>
     </div>
@@ -280,6 +365,56 @@
 <!-- CALLOUT -->
 <div class="callout fi">
     <div class="callout-text">Национализация Балтики, уход Heineken, перестройка рынка. Сети ищут российских поставщиков. Историческое окно открыто.</div>
+</div>
+
+<!-- ===== КРИТИЧЕСКИЕ ОБНОВЛЕНИЯ 2025 ===== -->
+<div class="fw fw-darker" id="critical2025">
+    <div class="container">
+        <div class="section-head fi"><div class="stag" style="color:#ef4444;">🚨 Критические обновления 2025</div><div class="stitle">Что поменялось за последний год</div><div class="sdesc">Переименования холдингов, ценовые шоки, новые линейки. Прямые фетчи официальных сайтов.</div></div>
+
+        <div class="crit-wrap fi">
+            <div class="crit-head"><span class="ic">!</span><h3>Структурные изменения — новые имена, новые портфели</h3></div>
+            <div class="sub">Два крупнейших холдинга переименованы. Один — ГК «Напитки Вместе» (бывш. AB InBev Efes, передан указом Президента № 1131 от 30.12.2024). Второй — Bochkarev Breweries (бывш. Арнест/Heineken RU, Сбер зашёл на 9.1%).</div>
+            <div class="holdings-row">
+                <div class="holding">
+                    <div class="year">С 01.09.2025</div>
+                    <h4>Напитки Вместе</h4>
+                    <div class="old">бывш. AB InBev Efes</div>
+                    <p>Владелец — Николай Тюрников. <strong>Лидер рынка:</strong> 259.2 млн дал в 2024, выручка 141.2 млрд ₽ (+30%). 11 заводов, 3 солодовенных комплекса, 50+ брендов.</p>
+                </div>
+                <div class="holding">
+                    <div class="year">С 01.11.2025</div>
+                    <h4>Bochkarev Breweries</h4>
+                    <div class="old">бывш. United Breweries (Арнест/Heineken)</div>
+                    <p>Сбер купил 9.1% в 2025. <strong>3-й крупнейший игрок РФ.</strong> 7 заводов от Heineken (куплены за 1€ в 2023). 20+ брендов: Krusovice, Bochkarev, Okhota, Three Bears, Жигулёвское 1978.</p>
+                </div>
+                <div class="holding">
+                    <div class="year">ОТКРЫТИЕ</div>
+                    <h4>Балтика — 98 SKU в 28 брендах</h4>
+                    <div class="old">ранее казалось "5 SKU"</div>
+                    <p>Балтика владеет <strong>Жигулёвским</strong>, Zatecky Gus, Арсенальным, Невским, Ярпиво, Большой Кружкой, Tony's Garret, Старым Мельником + ещё 20 брендов. Балтика 0: 5 безалкогольных SKU.</p>
+                </div>
+                <div class="holding">
+                    <div class="year">ОТКРЫТИЕ</div>
+                    <h4>МПК — 50+ SKU в 15 брендах</h4>
+                    <div class="old">ранее "5 SKU"</div>
+                    <p>Жигули Барное — <strong>10 SKU</strong> (включая Манго-Маракуйю!). Хамовники — ~10. Трёхгорное, <strong>5 Океан (крафт IPA)</strong>, Hollandia, Pabst, Schlitz, Ballantine. Любая ниша уже занята одним из их брендов.</p>
+                </div>
+            </div>
+
+            <div class="big-stats">
+                <div class="big-stat"><div class="big-stat-val">788.9</div><div class="big-stat-lbl">млн дал — производство<br>пива 2024 (+10.3%)</div></div>
+                <div class="big-stat"><div class="big-stat-val">726.6</div><div class="big-stat-lbl">млн дал — розница<br>2024 (+6.7%)</div></div>
+                <div class="big-stat"><div class="big-stat-val">196 ₽/л</div><div class="big-stat-lbl">цена в рознице сер. 2025<br>(было 165 ₽, +20%)</div></div>
+                <div class="big-stat"><div class="big-stat-val">96</div><div class="big-stat-lbl">новых брендов за<br>полгода 2024</div></div>
+            </div>
+
+            <div class="insight">
+                <h4>Что это значит для ЛыткаринЪ</h4>
+                <p>Целевая цена ~100 ₽/банка 0.45 л <strong style="color:var(--t1);">устарела</strong> — реальная 110-130 ₽. Себестоимость пересчитать: акциз +15% (2024) + ещё +10% (2025 внепланово), хмель подорожал (импортный), упаковка/логистика тоже. <strong style="color:var(--t1);">Q1 2026: объёмы пива в РФ ПАДАЮТ</strong> — окно возможностей сужается, нужно действовать быстрее.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- ===== РЫНОК — BENTO ===== -->
@@ -319,7 +454,7 @@
 
             <!-- price segments chart -->
             <div class="b-6 chart-card">
-                <h4>Ценовые сегменты (банка 0.5 л)</h4>
+                <h4>Ценовые сегменты (банка 0.45 л)</h4>
                 <div style="position:relative;height:220px"><canvas id="segChart"></canvas></div>
             </div>
 
@@ -343,7 +478,7 @@
         <div class="bento fi">
             <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(34,197,94,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="sc-val" style="color:var(--green)">+20%</div><div class="sc-lbl">Нефильтрованное</div><div class="sc-trend">Тренд #1</div></div>
             <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(234,179,8,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L12 14"/><path d="M2 12s4-4 8-4c6 0 8 6 8 6"/></svg></div><div class="sc-val" style="color:var(--gold)">+15%</div><div class="sc-lbl">Пшеничное</div><div class="sc-trend">30-40% жен.</div></div>
-            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(56,189,248,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div><div class="sc-val" style="color:var(--sky)">+30%</div><div class="sc-lbl">Безалкогольное</div><div class="sc-trend">Мегатренд</div></div>
+            <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(56,189,248,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div><div class="sc-val" style="color:var(--sky)">+58%</div><div class="sc-lbl">Б/А пиво на WB 2025</div><div class="sc-trend">Мегатренд</div></div>
             <div class="b-3 stat-card"><div class="sc-icon" style="background:rgba(167,139,250,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="sc-val" style="color:var(--violet)">Банка</div><div class="sc-lbl">Банка > бутылка</div><div class="sc-trend">Премиумизация</div></div>
 
             <!-- trends chart -->
@@ -363,8 +498,8 @@
         <div style="display:flex;flex-direction:column;gap:1.25rem" class="fi">
             <div class="comp-row">
                 <div class="comp-left"><h3>Жигули Барное</h3><div class="comp-price">95-115 руб. &middot; 6+ SKU</div><div class="comp-score">Сила: 9/10 — главный бенчмарк</div><div class="comp-bar"><div class="comp-bar-fill" style="width:90%;background:var(--g-hero)"></div></div></div>
-                <div class="comp-mid">МПК, Мытищи. Ретро-советский минимализм. Собственный ресторан на Арбате. Формат 0.45л. Лагерный профиль.<div class="tags"><span class="tag tag-g">Мощная узнаваемость</span><span class="tag tag-g">Федеральное покрытие</span><span class="tag tag-r">Ретро ограничивает ЦА</span><span class="tag tag-r">0.45л — жульничество</span></div></div>
-                <div class="comp-right"><strong>Обход:</strong> честный 0.5л, привязка к конкретному месту, вариативная линейка (элевые стили), "соседи, не корпорация"</div>
+                <div class="comp-mid">МПК, Мытищи. 10 SKU (включая Манго-Маракуйю!). Ретро-советский минимализм. Собственный ресторан на Арбате. Формат 0.45л (индустрия-стандарт).<div class="tags"><span class="tag tag-g">Мощная узнаваемость</span><span class="tag tag-g">Федеральное покрытие</span><span class="tag tag-r">Ретро ограничивает ЦА</span><span class="tag tag-r">Нет подмосковной привязки</span></div></div>
+                <div class="comp-right"><strong>Обход:</strong> привязка к конкретному месту (Лыткарино), вариативная линейка (элевые стили которых у них нет), подмосковный нарратив, "соседи, не корпорация"</div>
             </div>
             <div class="comp-row">
                 <div class="comp-left"><h3>Хамовники</h3><div class="comp-price">95-115 руб. &middot; 6 SKU</div><div class="comp-score">Сила: 6/10 — модель для ЛыткаринЪ</div><div class="comp-bar"><div class="comp-bar-fill" style="width:60%;background:var(--g-gold)"></div></div></div>
@@ -373,7 +508,7 @@
             </div>
             <div class="comp-row">
                 <div class="comp-left"><h3>Kozel</h3><div class="comp-price">95-120 руб. &middot; 4 SKU</div><div class="comp-score">Сила: 8/10</div><div class="comp-bar"><div class="comp-bar-fill" style="width:80%;background:var(--green)"></div></div></div>
-                <div class="comp-mid">AB InBev Efes (лицензия). Реальная чешская история. Козёл — мощный маскот. Низкий ABV (3.7-4.0%). Лучшее тёмное в сегменте.<div class="tags"><span class="tag tag-g">Чешская история</span><span class="tag tag-g">Сильный маскот</span><span class="tag tag-r">Лицензионное</span><span class="tag tag-r">Нет элевых стилей</span></div></div>
+                <div class="comp-mid">Напитки Вместе (бывш. AB InBev Efes, с 01.09.2025). Реальная чешская история. Козёл — мощный маскот. Низкий ABV (3.7-4.0%). Лучшее тёмное в сегменте.<div class="tags"><span class="tag tag-g">Чешская история</span><span class="tag tag-g">Сильный маскот</span><span class="tag tag-r">Лицензионное</span><span class="tag tag-r">Нет элевых стилей</span></div></div>
                 <div class="comp-right"><strong>Обход:</strong> "Не лицензия, а своё. Сварено здесь, для вас." Более высокий ABV для тех, кому Kozel слишком лёгкий</div>
             </div>
             <div class="comp-row">
@@ -419,6 +554,63 @@
     </div>
 </div>
 
+<!-- ===== ПОДМОСКОВНЫЙ КРАФТ ===== -->
+<div class="fw fw-darker" id="mo-craft">
+    <div class="container">
+        <div class="section-head fi"><div class="stag">Подмосковные крафт-конкуренты</div><div class="stitle">Наши соседи по географии</div><div class="sdesc">Ранее писал "никто не использует подмосковный нарратив" — это была ошибка. В премиум-крафте Подмосковье плотно занято. Но в среднем сегменте 100-130 ₽ — пусто.</div></div>
+
+        <div class="mo-craft-grid fi">
+            <div class="mo-craft ultra">
+                <span class="zone-pill">Ультра-премиум · 200-500 ₽</span>
+                <h4>Stamm Brewing</h4>
+                <div class="city">Красная Пахра, Новая Москва · с 2011</div>
+                <p><strong style="color:var(--t1);">120+ сортов</strong> — флагман русского крафта. Спонтанная ферментация, многолетняя выдержка в дубовых бочках. Барель-эйджед серии (вино/виски). Ультра-премиум для ценителей.</p>
+                <span class="price">200-500+ ₽</span>
+            </div>
+            <div class="mo-craft ultra">
+                <span class="zone-pill">Ультра-премиум · 200-400 ₽</span>
+                <h4>Victory Art Brew</h4>
+                <div class="city">Ивантеевка, МО · с 2013</div>
+                <p>🏆 <strong style="color:var(--t1);">"Лучшая пивоварня России" RateBeer 2016</strong>. Пионеры IPA, saison, imperial stouts в РФ. Celebration Stout — золото международное. 10+ SKU. Владелец Денис Ковалёв (тот же что у Lemonardo?).</p>
+                <span class="price">200-400+ ₽</span>
+            </div>
+            <div class="mo-craft high">
+                <span class="zone-pill">Средне-премиум · 150-250 ₽</span>
+                <h4>Gletcher</h4>
+                <div class="city">Подмосковье</div>
+                <p>Крафтовая пивоварня. Эли, стауты, IPA.</p>
+                <span class="price">150-250 ₽</span>
+            </div>
+            <div class="mo-craft high">
+                <span class="zone-pill">Премиум-крафт · 200-400 ₽</span>
+                <h4>Brewery#13</h4>
+                <div class="city">Подмосковье</div>
+                <p>Только <strong style="color:var(--t1);">импортные солод и хмель</strong> — премиум-крафт. Собственные рецепты.</p>
+                <span class="price">200-400 ₽</span>
+            </div>
+            <div class="mo-craft mid">
+                <span class="zone-pill">ЦФО · ~140 ₽</span>
+                <h4>Salden'S Brewery</h4>
+                <div class="city">Тула · федеральный охват</div>
+                <p>Не МО, но ЦФО. <strong style="color:var(--t1);">170 000 л/мес</strong>. Доставка от Калининграда до Владивостока. "Сильнейший игрок крафта с максимумом сортов". saldens.ru</p>
+                <span class="price">~140 ₽</span>
+            </div>
+            <div class="mo-craft mid">
+                <span class="zone-pill">⭐ НАША НИША</span>
+                <h4>ЛыткаринЪ</h4>
+                <div class="city">Лыткарино, МО</div>
+                <p>Средний сегмент <strong style="color:var(--t1);">110-130 ₽</strong> в Подмосковье — <strong style="color:var(--green);">ПУСТО, никого</strong>. Премиум забрали Stamm/Victory, массовый — МПК (Жигули, Мытищи). Средний открыт.</p>
+                <span class="price">110-130 ₽</span>
+            </div>
+        </div>
+
+        <div class="insight fi" style="margin-top:2rem;">
+            <h4>Главный вывод</h4>
+            <p>Подмосковный нарратив <strong style="color:var(--t1);">УЖЕ занят</strong> крафтовыми брендами в премиум-сегменте (200+ ₽). НО: в среднем 100-130 ₽ подмосковных брендов нет. Мы не пытаемся быть лучше Stamm/Victory (они в премиум). Наша позиция — <strong style="color:var(--amber);">"подмосковный крафт по доступной цене"</strong>.</p>
+        </div>
+    </div>
+</div>
+
 <!-- ===== НИШИ ===== -->
 <div class="fw fw-darker" id="gaps">
     <div class="container">
@@ -426,7 +618,7 @@
         <div class="bento fi">
             <div class="b-4 gap"><div class="gap-n">01</div><h4>Крафтовые стили по цене массового</h4><p>IPA, стаут, портер за 110-130 руб. в сетях. Крафт — 150-220 руб. Масс-маркет не предлагает. Огромный потенциал.</p></div>
             <div class="b-4 gap"><div class="gap-n">02</div><h4>Подмосковный бренд</h4><p>НИ ОДНОГО пивного бренда из Подмосковья. Хамовники — Москва. 8+ млн жителей МО — белое пятно на карте.</p></div>
-            <div class="b-4 gap"><div class="gap-n">03</div><h4>Честный формат 0.5 л</h4><p>Большинство перешли на 0.45л. Бренд с полными 0.5л — маркетинговый приём. "Мы не жульничаем с объёмом."</p></div>
+            <div class="b-4 gap"><div class="gap-n">03</div><h4>Подмосковный крафт в среднем сегменте</h4><p>Stamm, Victory Art Brew, Brewery#13 — все в премиуме (200-500₽). В массовом сегменте (110-130₽) подмосковных крафт-брендов НЕТ. Наша пустая ниша.</p></div>
             <div class="b-4 gap"><div class="gap-n">04</div><h4>Сезонные в среднем сегменте</h4><p>Крафт работает с сезонными релизами. В среднем сегменте этого нет. Зимний стаут, летний вайцен = hype.</p></div>
             <div class="b-4 gap"><div class="gap-n">05</div><h4>Пиво для еды (food pairing)</h4><p>Ни один бренд в среднем сегменте не позиционируется как "пиво к еде". Крафт делает, но дорого.</p></div>
             <div class="b-4 gap"><div class="gap-n">06</div><h4>Безалкогольный крафт</h4><p>Б/а IPA, б/а пшеничное, б/а стаут по 100-120 руб. — полностью свободная ниша. Мегатренд ЗОЖ.</p></div>
@@ -439,11 +631,11 @@
     <div class="container">
         <div class="section-head fi"><div class="stag">Продуктовая линейка</div><div class="stitle">5 SKU на старте</div><div class="sdesc">260 рецептов — выбрали лучшие. Каждый сорт закрывает конкретную нишу.</div></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem" class="fi">
-            <div class="lineup-card"><div class="lc-tag" style="color:var(--amber)">Базовый SKU</div><h3>ЛыткаринЪ Светлое</h3><div class="lc-desc">Чешский светлый лагер. Основа линейки — сбалансированный, питкий, классика.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.8%</div><div class="lc-stat"><strong>Стиль:</strong> Чешский лагер</div><div class="lc-stat"><strong>~100 руб.</strong></div></div></div>
-            <div class="lineup-card"><div class="lc-tag" style="color:var(--green)">Тренд #1</div><h3>ЛыткаринЪ Нефильтрованное</h3><div class="lc-desc">Самый быстрорастущий стиль (+15-20%/год). Мутное, ароматное, с характером.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.5%</div><div class="lc-stat"><strong>Стиль:</strong> Нефильтр. лагер</div><div class="lc-stat"><strong>+20%/год</strong></div></div></div>
-            <div class="lineup-card"><div class="lc-tag" style="color:var(--gold)">Расширение ЦА</div><h3>ЛыткаринЪ Пшеничное</h3><div class="lc-desc">Хефевайцен. Привлекает женщин (30-40% покупателей). Мягкое, фруктовое, банановый тон.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.7%</div><div class="lc-stat"><strong>Стиль:</strong> Вайцен</div><div class="lc-stat"><strong>+15%/год</strong></div></div></div>
-            <div class="lineup-card"><div class="lc-tag" style="color:var(--beer-dark)">Полнота линейки</div><h3>ЛыткаринЪ Тёмное</h3><div class="lc-desc">Дункель. Карамельный, насыщенный, плотный. Для ценителей тёмного.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 5.0%</div><div class="lc-stat"><strong>Стиль:</strong> Дункель</div><div class="lc-stat"><strong>~100-110 руб.</strong></div></div></div>
-            <div class="lineup-card"><div class="lc-tag" style="color:var(--sky)">Мегатренд</div><h3>ЛыткаринЪ Безалкогольное</h3><div class="lc-desc">Б/А лагер. Рост +25-30%/год. Реклама без ограничений ФЗ-38. Маркетинговый локомотив.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> &lt;0.5%</div><div class="lc-stat"><strong>Стиль:</strong> Б/А лагер</div><div class="lc-stat"><strong>+30%/год</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--amber)">Базовый SKU</div><h3>ЛыткаринЪ Светлое</h3><div class="lc-desc">Чешский светлый лагер. Основа линейки — сбалансированный, питкий, классика. 0.45 л.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.8%</div><div class="lc-stat"><strong>Стиль:</strong> Чешский лагер</div><div class="lc-stat"><strong>110-125 ₽</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--green)">Тренд #1</div><h3>ЛыткаринЪ Нефильтрованное</h3><div class="lc-desc">Самый быстрорастущий стиль (+15-20%/год). Мутное, ароматное, с характером. 0.45 л.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.5%</div><div class="lc-stat"><strong>Стиль:</strong> Нефильтр. лагер</div><div class="lc-stat"><strong>115-130 ₽</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--gold)">Расширение ЦА</div><h3>ЛыткаринЪ Пшеничное</h3><div class="lc-desc">Хефевайцен. Привлекает женщин (30-40% покупателей). Мягкое, фруктовое, банановый тон. 0.45 л.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 4.7%</div><div class="lc-stat"><strong>Стиль:</strong> Вайцен</div><div class="lc-stat"><strong>115-130 ₽</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--beer-dark)">Полнота линейки</div><h3>ЛыткаринЪ Тёмное</h3><div class="lc-desc">Дункель. Карамельный, насыщенный, плотный. Для ценителей тёмного. 0.45 л.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> 5.0%</div><div class="lc-stat"><strong>Стиль:</strong> Дункель</div><div class="lc-stat"><strong>115-130 ₽</strong></div></div></div>
+            <div class="lineup-card"><div class="lc-tag" style="color:var(--sky)">Мегатренд</div><h3>ЛыткаринЪ Безалкогольное</h3><div class="lc-desc">Б/А лагер. +58% на WB в 2025. Реклама без ФЗ-38. Единственный SKU для маркетплейсов. 0.45 л.</div><div class="lc-stats"><div class="lc-stat"><strong>ABV:</strong> &lt;0.5%</div><div class="lc-stat"><strong>Стиль:</strong> Б/А лагер</div><div class="lc-stat"><strong>+58% WB</strong></div></div></div>
         </div>
     </div>
 </div>
@@ -454,15 +646,15 @@
         <div class="section-head fi"><div class="stag">Экономика</div><div class="stitle">Цифры и маржинальность</div></div>
         <div class="bento fi">
             <div class="b-6 econ-card">
-                <h4>Себестоимость банки 0.5 л</h4>
-                <div class="econ-row"><span class="er-k">Сырьё (солод, хмель, дрожжи)</span><span class="er-v">8-12 руб.</span></div>
-                <div class="econ-row"><span class="er-k">Банка алюм. 0.5 л</span><span class="er-v">8-10 руб.</span></div>
-                <div class="econ-row"><span class="er-k">Печать / этикетка</span><span class="er-v">2-3 руб.</span></div>
-                <div class="econ-row"><span class="er-k">Акциз (~26 руб./л)</span><span class="er-v">~13 руб.</span></div>
+                <h4>Себестоимость банки 0.45 л (2025)</h4>
+                <div class="econ-row"><span class="er-k">Сырьё (солод, хмель импорт, дрожжи)</span><span class="er-v">10-15 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Банка алюм. 0.45 л + крышка</span><span class="er-v">9-11 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Печать / этикетка (soft-touch + Spot UV)</span><span class="er-v">3-5 руб.</span></div>
+                <div class="econ-row"><span class="er-k">Акциз (~30 руб./л после +25% 2024-2025)</span><span class="er-v">~13.5 руб.</span></div>
                 <div class="econ-row"><span class="er-k">ЕГАИС + Честный ЗНАК</span><span class="er-v">~1 руб.</span></div>
                 <div class="econ-row"><span class="er-k">Энергия, амортизация</span><span class="er-v">3-5 руб.</span></div>
                 <div class="econ-row"><span class="er-k">Труд</span><span class="er-v">2-4 руб.</span></div>
-                <div class="econ-row total"><span class="er-k">ИТОГО</span><span class="er-v" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">~37-48 руб.</span></div>
+                <div class="econ-row total"><span class="er-k">ИТОГО</span><span class="er-v" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">~42-55 руб.</span></div>
             </div>
             <div class="b-6 econ-card">
                 <h4>Инвестиции в запуск</h4>
@@ -489,13 +681,45 @@
         </div>
 
         <div class="pflow fi">
-            <div class="pf-step"><div class="pf-val">~42</div><div class="pf-lbl">Себестоимость</div></div>
+            <div class="pf-step"><div class="pf-val">~48</div><div class="pf-lbl">Себестоимость</div></div>
             <div class="pf-arr">&rarr;</div>
-            <div class="pf-step"><div class="pf-val" style="color:var(--amber)">55-65</div><div class="pf-lbl">Отпускная (маржа 30-50%)</div></div>
+            <div class="pf-step"><div class="pf-val" style="color:var(--amber)">65-80</div><div class="pf-lbl">Отпускная (маржа 35-55%)</div></div>
             <div class="pf-arr">&rarr;</div>
-            <div class="pf-step"><div class="pf-val">65-80</div><div class="pf-lbl">+ Дистрибьютор</div></div>
+            <div class="pf-step"><div class="pf-val">80-95</div><div class="pf-lbl">+ Дистрибьютор</div></div>
             <div class="pf-arr">&rarr;</div>
-            <div class="pf-step active"><div class="pf-val" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">95-110</div><div class="pf-lbl">На полке</div></div>
+            <div class="pf-step active"><div class="pf-val" style="background:var(--g-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">110-130</div><div class="pf-lbl">На полке (2025)</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== СИДР — НОВАЯ КАТЕГОРИЯ ===== -->
+<div class="fw fw-darker" id="cider">
+    <div class="container">
+        <div class="section-head fi"><div class="stag" style="color:var(--green);">Смежная категория</div><div class="stitle">СИДР — взрывной рост 2025</div><div class="sdesc">Пока пиво растёт +0.6%, сидр рвёт рынок. Регуляторное окно с 01.01.2026 освобождает нишу.</div></div>
+
+        <div class="cider-wrap fi">
+            <div class="cider-badge">⭐ Возможность для ЛыткаринЪ</div>
+            <h3>Сидр вытесняет пиво и вино</h3>
+            <div class="sub">По данным РБК: "Потребление сидра в России стремительно растёт, вытесняя пиво и даже вино из привычек части аудитории". Завод ЛыткаринЪ уже работает с яблочным суслом (ИТМО) — вход в категорию проще, чем у конкурентов.</div>
+
+            <div class="cider-row">
+                <div class="cider-facts">
+                    <div class="cider-fact"><div class="num">+164%</div><div class="txt"><strong>Продажи сидра в РФ</strong> в деньгах<br>янв-апр 2025 vs 2024</div></div>
+                    <div class="cider-fact"><div class="num">+68%</div><div class="txt"><strong>В литрах</strong> год к году<br>(пиво за тот же период: +0.6%)</div></div>
+                    <div class="cider-fact"><div class="num">3.9 млн</div><div class="txt"><strong>дал производство сидра</strong> за 5 мес. 2025<br>(+15.1% к 2024)</div></div>
+                    <div class="cider-fact"><div class="num">01.01.26</div><div class="txt"><strong>Регуляторное окно:</strong> нельзя регистрировать сидр не из яблочного сусла. "Фруктовые" на ароматизаторах исчезнут → ниша для натуральных</div></div>
+                </div>
+                <div style="position:relative;height:360px;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;">
+                    <h4 style="font-family:'Space Grotesk';font-size:0.95rem;margin-bottom:0.5rem;">Рост: сидр vs пиво vs слабоалкогольные</h4>
+                    <p style="font-size:0.75rem;color:var(--t3);margin-bottom:1rem;">% изменения в деньгах, Я/А 2025</p>
+                    <div style="position:relative;height:250px;"><canvas id="ciderGrowthChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="insight" style="margin-top:2rem;">
+                <h4>Линейка ЛыткаринЪ Сидр (возможность)</h4>
+                <p>Запустить через 6-12 мес. после пивной линейки. <strong style="color:var(--t1);">3 SKU:</strong> Сухой (классика), Полусладкий, Грушевый перри (премиум). Цена 100-130 ₽/банка 0.45 л. Главный конкурент — <strong style="color:var(--t1);">Mr.Lis (Bochkarev Breweries)</strong>: 3.35 млн дал в 2024 (+25.8%).</p>
+            </div>
         </div>
     </div>
 </div>
@@ -503,40 +727,72 @@
 <!-- ===== ДИСТРИБУЦИЯ + РЕКЛАМА ===== -->
 <div class="fw fw-dark">
     <div class="container">
-        <div class="section-head fi"><div class="stag">Дистрибуция и продвижение</div><div class="stitle">Каналы и ограничения</div></div>
+        <div class="section-head fi"><div class="stag">Дистрибуция и продвижение</div><div class="stitle">Каналы и ограничения</div><div class="sdesc">Пиво — это алкоголь. Правила продажи жёстче чем у лимонадов. Но ниши свободнее.</div></div>
+
+        <div class="alko-warning fi">
+            <h4>🚫 Где пиво НЕ продаётся (в отличие от ФИЛЛС)</h4>
+            <ul class="alko-list">
+                <li>Wildberries (в открытую)</li>
+                <li>Ozon (в открытую)</li>
+                <li>Яндекс.Лавка</li>
+                <li>Самокат</li>
+                <li>Купер</li>
+                <li>Доставка без лицензии</li>
+            </ul>
+            <p style="font-size:0.82rem;color:var(--t2);margin-top:1rem;">Единственное что продаётся на маркетплейсах — <strong style="color:var(--green);">безалкогольное пиво</strong> (+58% на WB в 2025). Классическое пиво — только розница, HoReCa и алко-маркетплейсы (WineLab, AmWine).</p>
+        </div>
+
+        <div class="kib-spotlight fi">
+            <div class="tag">🔥 Приоритетный канал на старте</div>
+            <h4>Красное & Белое + Бристоль — Mercury Retail Group</h4>
+            <p style="font-size:0.88rem;color:var(--t2);margin-bottom:1.25rem;">Лидеры алко-ритейла. Через них идёт <strong style="color:var(--t1);">44% импорта пива в РФ</strong>. По словам поставщиков — продаётся больше, чем через Магнит и X5. Балтика делает private label "Рижское" эксклюзивно для Бристоля — есть прецедент кастомной разработки.</p>
+            <div class="kib-stats">
+                <div class="kib-stat"><div class="kib-stat-val">20,527</div><div class="kib-stat-lbl">магазинов КиБ<br>в 77 регионах РФ</div></div>
+                <div class="kib-stat"><div class="kib-stat-val" style="color:var(--green);">0 ₽</div><div class="kib-stat-lbl">листинг —<br>БЕСПЛАТНЫЙ (!)</div></div>
+                <div class="kib-stat"><div class="kib-stat-val">~13,500</div><div class="kib-stat-lbl">точек в формате<br>"compact neighborhood"</div></div>
+            </div>
+            <p style="font-size:0.82rem;color:var(--t2);margin-top:1.25rem;"><strong style="color:var(--t1);">Стратегия:</strong> КиБ — первая цель на старте. Через 12 мес. — предложить private label Бристолю/КиБ (по примеру Рижского от Балтики). <strong style="color:var(--red);">⚠️ Регуляторика 2025:</strong> открытие новых алко-точек упало в 6 раз — конкуренция за полку растёт.</p>
+        </div>
 
         <div class="bento fi">
             <div class="b-4" style="padding:0;border:none;background:none">
                 <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
                     <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:1rem">Этап 1: 0-6 мес.</div>
-                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Локальный запуск</h4>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Локальный запуск + КиБ</h4>
                     <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
-                        <div>Несетевая розница (Лыткарино, Люберцы)</div>
-                        <div>ВкусВилл — бесплатный листинг</div>
-                        <div>Тапрум при заводе</div>
-                        <div>HoReCa — кеговое пиво</div>
+                        <div>🔥 Красное &amp; Белое — 20,527 магазинов, листинг БЕСПЛАТНЫЙ</div>
+                        <div>Бристоль (Mercury Retail)</div>
+                        <div>Несетевая розница МО (Лыткарино, Люберцы, Жуковский)</div>
+                        <div>Тапрум при заводе (100% маржа)</div>
+                        <div>HoReCa МО — кеговое пиво, 10-20 точек</div>
+                        <div>Крафт-магазины: Beerkontora, Beerology, RusBeerShop</div>
                     </div>
                 </div>
             </div>
             <div class="b-4" style="padding:0;border:none;background:none">
                 <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
                     <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:1rem">Этап 2: 6-12 мес.</div>
-                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Подмосковье</h4>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Подмосковье + МСК крафт-бары</h4>
                     <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
                         <div>Пятёрочка / Перекрёсток — МО-кластер</div>
-                        <div>Локальные сети (Верный, ДИКСИ)</div>
-                        <div>Дистрибьюторы (Лудинг, МБГ)</div>
+                        <div>Магнит, Лента — МО</div>
+                        <div>ВкусВилл — растущий канал крафта</div>
+                        <div>HoReCa МСК: Zagovor, Red Button, FFF Brew (104+ крафт-баров)</div>
+                        <div>Дистрибьюторы (Лудинг, МБГ, Aroma)</div>
+                        <div>Б/А линейка → WB, Ozon, Я.Маркет</div>
                     </div>
                 </div>
             </div>
             <div class="b-4" style="padding:0;border:none;background:none">
                 <div style="padding:1.75rem;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;height:100%">
                     <div style="font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1rem">Этап 3: 12-24 мес.</div>
-                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Москва и ЦФО</h4>
+                    <h4 style="font-family:'DM Serif Display';font-size:1.15rem;margin-bottom:1rem">Москва, ЦФО + private label</h4>
                     <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;color:var(--t2)">
                         <div>Федеральные сети — масштабирование</div>
-                        <div>Региональные сети ЦФО</div>
-                        <div>Анализ продаж, корректировка</div>
+                        <div>Региональные сети ЦФО (конкуренция с Salden'S)</div>
+                        <div>Private label для Бристоля/КиБ (как Балтика-Рижское)</div>
+                        <div>Сидр как 2-я линейка (через 12 мес.)</div>
+                        <div>Анализ продаж, корректировка линейки</div>
                     </div>
                 </div>
             </div>
@@ -557,9 +813,11 @@
             <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h4>Лицензия</h4><p>НЕ требуется для пива. Только уведомление РАТК.</p></div></div>
             <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="9"/><rect x="14" y="7" width="3" height="5"/></svg></div><div><h4>ЕГАИС</h4><p>Обязательно. ~300-500 тыс. руб. (уже подключено).</p></div></div>
             <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h4>Честный ЗНАК</h4><p>DataMatrix. Оборудование установлено.</p></div></div>
-            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div><h4>Акцизы</h4><p>~26 руб./л (0.5-8.6%). ~13 руб. на банку.</p></div></div>
+            <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div><h4>Акцизы 2025</h4><p>~30 руб./л после +15% (2024) + +10% (2025). ~13.5₽ на банку 0.45.</p></div></div>
             <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div><h4>Маркировка</h4><p>"Чрезмерное употребление алкоголя вредит здоровью".</p></div></div>
             <div class="b-4 reg"><div class="reg-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><h4>Декларирование</h4><p>~30-50 тыс. руб. Обязательно.</p></div></div>
+            <div class="b-4 reg" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2);"><div class="reg-i" style="background:rgba(239,68,68,0.1);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><h4 style="color:#ef4444;">Алко-точек −6× в 2025</h4><p>Регионы ужесточили. Открытие новых лицензий упало в 6 раз. Конкуренция за полку растёт.</p></div></div>
+            <div class="b-4 reg" style="background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2);"><div class="reg-i" style="background:rgba(34,197,94,0.1);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg></div><div><h4 style="color:#22c55e;">Сидр — окно 01.01.2026</h4><p>Нельзя регистрировать сидр не из яблочного сусла. "Фруктовые" ароматизаторные исчезнут.</p></div></div>
         </div>
     </div>
 </div>
@@ -617,8 +875,8 @@
     <div class="stag" style="text-align:center;margin-bottom:1.5rem">Итоговый вывод</div>
     <div class="callout-text">ЛыткаринЪ — народный крафт. Пиво с характером, историей и разнообразием стилей по цене обычного пива. Рынок готов. Окно открыто.</div>
     <div class="bento fi" style="max-width:1000px;margin:3rem auto 0">
-        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--amber);margin-bottom:0.5rem">Локальность + 0.5 л</div><div style="font-size:0.9rem;color:var(--t2)">"Мы из Лыткарино, ваши соседи. Честный формат, честный вкус."</div></div>
-        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--green);margin-bottom:0.5rem">Крафт по 100-130 руб.</div><div style="font-size:0.9rem;color:var(--t2)">IPA, пшеничное, стаут в сетях. 260 рецептов — УТП, которого ни у кого нет.</div></div>
+        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--amber);margin-bottom:0.5rem">Локальность + нарратив</div><div style="font-size:0.9rem;color:var(--t2)">"Мы из Лыткарино, ваши соседи. 260 рецептов — выбрали лучшие. Честный вкус."</div></div>
+        <div class="b-6" style="padding:2rem"><div style="font-family:'DM Serif Display';font-size:1.3rem;color:var(--green);margin-bottom:0.5rem">Крафт по 110-130 ₽</div><div style="font-size:0.9rem;color:var(--t2)">Пшеничное, нефильтр, тёмное — в сетях по цене массового пива. На старте без IPA (хмель дорогой).</div></div>
     </div>
 </div>
 
@@ -641,7 +899,7 @@ document.querySelectorAll('.fi').forEach(e=>obs.observe(e));
     c.style.width=w+'px'; c.style.height=w+'px';
     new Chart(c,{
         type:'doughnut',
-        data:{labels:['AB InBev Efes','Балтика','Арнест','МПК','Региональные/крафт','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderColor:'#080706',borderWidth:3,hoverOffset:6}]},
+        data:{labels:['Напитки Вместе (ex AB InBev)','Балтика','Bochkarev (ex Арнест)','МПК','Региональные/крафт','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderColor:'#080706',borderWidth:3,hoverOffset:6}]},
         options:{responsive:false,maintainAspectRatio:false,cutout:'78%',animation:{duration:1200},plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',borderColor:'rgba(200,170,100,0.1)',borderWidth:1,cornerRadius:8,padding:12,callbacks:{label:function(c){return ' '+c.label+': '+c.raw+'%'}}}}}
     });
 })();
@@ -649,7 +907,7 @@ document.querySelectorAll('.fi').forEach(e=>obs.observe(e));
 // Market share
 new Chart(document.getElementById('shareChart'),{
     type:'bar',
-    data:{labels:['AB InBev\nEfes','Балтика','Арнест','МПК','Крафт/\nрегион.','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderRadius:6,barThickness:28}]},
+    data:{labels:['Напитки\nВместе','Балтика','Bochkarev\n(Арнест)','МПК','Крафт/\nрегион.','Прочие'],datasets:[{data:[28,24,11,6,17,14],backgroundColor:['#f59e0b','#38bdf8','#22c55e','#a78bfa','#fb7185','rgba(255,255,255,0.08)'],borderRadius:6,barThickness:28}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',titleColor:'#f5f0e5',bodyColor:'#a89e88',cornerRadius:8}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'#a89e88',font:{size:11}}}}}
 });
 
@@ -679,8 +937,8 @@ new Chart(document.getElementById('posChart'),{
 // Trends
 new Chart(document.getElementById('trendsChart'),{
     type:'bar',
-    data:{labels:['Нефильтрованное','Безалкогольное','Пшеничное','Банка (формат)','Премиумизация','Евролагер','ПЭТ 1.5-2.5л','Крепкое 8-9%'],
-        datasets:[{data:[20,30,15,12,8,-5,-15,-20],backgroundColor:function(ctx){return ctx.raw>=0?'rgba(34,197,94,0.6)':'rgba(239,68,68,0.5)'},borderRadius:6,barThickness:24}]},
+    data:{labels:['Сидр (в деньгах)','Сидр (в литрах)','Б/А пиво на WB','Нефильтрованное','Пшеничное','Банка (формат)','Премиумизация','Пиво общее','Евролагер','ПЭТ 1.5-2.5л','Крепкое 8-9%'],
+        datasets:[{data:[164.5,68,58,20,15,12,8,0.6,-5,-15,-20],backgroundColor:function(ctx){return ctx.raw>=0?'rgba(34,197,94,0.6)':'rgba(239,68,68,0.5)'},borderRadius:6,barThickness:20}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{backgroundColor:'#28241d',cornerRadius:8,callbacks:{label:function(c){return (c.raw>0?'+':'')+c.raw+'%/год'}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return (v>0?'+':'')+v+'%'}}},y:{grid:{display:false},ticks:{color:'#a89e88',font:{size:11}}}}}
 });
 
@@ -713,6 +971,43 @@ new Chart(document.getElementById('marginChart'),{
     ]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6050',callback:function(v){return v+' руб.'}}},y:{stacked:true,grid:{display:false},ticks:{color:'#a89e88',font:{size:10}}}},plugins:{legend:{labels:{color:'#a89e88',font:{size:10},usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'#28241d',cornerRadius:8}}}
 });
+
+// Cider growth chart
+var ciderCanvas = document.getElementById('ciderGrowthChart');
+if (ciderCanvas) {
+    new Chart(ciderCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['Сидр\nв деньгах', 'Слабоалко-\nгольные', 'Сидр\nв литрах', 'Сидр\nпроизводство', 'Б/А пиво\nна WB', 'Пиво\nобщее'],
+            datasets: [{
+                data: [164.5, 58.2, 68.2, 15.1, 58, 0.6],
+                backgroundColor: function(ctx) {
+                    var v = ctx.raw;
+                    if (v >= 50) return 'rgba(34,197,94,0.75)';
+                    if (v >= 10) return 'rgba(251,191,36,0.6)';
+                    return 'rgba(156,163,175,0.35)';
+                },
+                borderRadius: 6,
+                barThickness: 22
+            }]
+        },
+        options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#28241d', titleColor: '#f5f0e5', bodyColor: '#a89e88',
+                    borderColor: 'rgba(200,170,100,0.1)', borderWidth: 1, cornerRadius: 8,
+                    callbacks: { label: function(c) { return ' +' + c.raw + '% год к году'; } }
+                }
+            },
+            scales: {
+                x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b6050', font: { size: 10 }, callback: function(v) { return '+' + v + '%'; } } },
+                y: { grid: { display: false }, ticks: { color: '#a89e88', font: { size: 9 } } }
+            }
+        }
+    });
+}
 
 // Checklist
 document.querySelectorAll('.cl-item').forEach(function(i){i.addEventListener('click',function(){i.classList.toggle('on')})});
